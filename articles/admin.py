@@ -12,11 +12,10 @@ class ScopeAdmin(admin.ModelAdmin):
 
 class ScopeInlineFormset(BaseInlineFormSet):
     def clean(self):
-        if len(self.forms) == 0:
-            raise ValidationError('Не указан основной раздел!')
-
-        if len(self.forms) != len({form.cleaned_data['scope'].id for form in self.forms}):
-            raise ValidationError('Основной раздел может быть только один!')
+        if [(form.cleaned_data['is_main'] == True) for form in self.forms].count(True) > 1:
+            raise ValidationError('Основной раздел должен быть 1!')
+        if [(form.cleaned_data['is_main'] == True) for form in self.forms].count(True) == 0:
+            raise ValidationError('не задан основной раздел!')
         return super().clean()
 
 
