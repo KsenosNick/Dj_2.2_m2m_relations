@@ -9,5 +9,4 @@ def articles_list(request):
     context = {
         'object_list': Article.objects.all().order_by(ordering)
     }
-
     return render(request, template, context)
